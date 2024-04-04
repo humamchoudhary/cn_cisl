@@ -1,0 +1,35 @@
+<!-- reservation.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservation Form</title>
+</head>
+<body>
+    <h1>Create Reservation</h1>
+    <form action="/reservation" method="post">
+        <div>
+            <label for="teacherName">Teacher Name:</label>
+            <input type="text" id="teacherName" name="teacherName" required>
+        </div>
+        <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div>
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" required>
+        </div>
+        <div>
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endTime" required>
+        </div>
+        <div>
+            <label for="recursive">Recursive:</label>
+            <input type="checkbox" id="recursive" name="recursive">
+        </div>
+        <div>
+            <button type="submit">Create Reservation</button>
+        </div>
+    </form>
+</body>
+</html>

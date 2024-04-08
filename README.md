@@ -39,6 +39,28 @@ Presentation:
     Prepare a presentation highlighting the revamped website design, key features, implementation details, and testing results.
     Demonstrate the functionality of the control panel and lab reservation system during the presentation.
     Solicit feedback from stakeholders for further refinement and improvement.
+# Todo:
+## Backend:
+- [ ] Login for teacher 
+- [ ] Login for admin 
+- [ ] Lab Reservation 
+- [ ] View Timing 
+
+### Lab Reservation System:
+- [ ] Select Timing 
+- [ ] Select Recurrence 
+- [ ] Select Subject 
+- [ ] Delete a Reservation 
+- [ ] Edit a Reservation 
+
+## Frontend
+- [ ] Login Page (admin & teacher) 
+- [ ] Time Table Page 
+- [ ] Reservation Page 
+- [ ] Dark Mode 
+- [ ] Text only Mode 
+- [ ] All screen optimiation 
+
 
 Conclusion:
 

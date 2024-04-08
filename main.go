@@ -14,18 +14,19 @@ func main() {
 	// models.CreateTeacher(teacher)
 
 	// SELECTING
+	var teacher []models.Teacher
+	models.GetTeacherByID(123, &teacher)
 
-	teacher, err := models.GetTeacherByID(123)
-	if err != nil {
-		fmt.Println("Error in getting", err)
-	}
-	fmt.Println(teacher.Name)
+	fmt.Println(teacher[0])
 
 	// router := gin.Default()
+	// t_r := router.Group("/teacher")
+	// {
+	// 	t_r.POST("/login", handler.HandlerTeacherLogin)
+	// }
 	// router.LoadHTMLGlob("templates/*")
 
 	// // //router.LoadHTMLFiles("templates/template1.html", "templates/template2.html")
-
 	// // router.GET("/", func(c *gin.Context) {
 	// // 	c.HTML(http.StatusOK, "index.tmpl", gin.H{
 	// // 		"title": "Main website",

@@ -21,19 +21,27 @@ func ConnectDatabase() error {
 	return nil
 }
 
-func Insert(tableName string, data map[string]interface{}) error {
+func Insert(tableName string, data interface{}) error {
 	err := ConnectDatabase()
 	if err != nil {
 		return err
 	}
 	defer DB.Close()
 
-	columns := make([]string, 0, len(data))
-	values := make([]interface{}, 0, len(data))
-	placeholders := make([]string, 0, len(data))
-	for k, v := range data {
-		columns = append(columns, k)
-		values = append(values, v)
+	dataValue := reflect.ValueOf(data)
+	if dataValue.Kind() != reflect.Struct {
+		return fmt.Errorf("data must be a struct")
+	}
+
+	dataType := dataValue.Type()
+	columns := make([]string, 0, dataType.NumField())
+	values := make([]interface{}, 0, dataType.NumField())
+	placeholders := make([]string, 0, dataType.NumField())
+
+	for i := 0; i < dataType.NumField(); i++ {
+		field := dataType.Field(i)
+		columns = append(columns, field.Name)
+		values = append(values, dataValue.Field(i).Interface())
 		placeholders = append(placeholders, "?")
 	}
 

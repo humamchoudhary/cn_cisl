@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/humamchoudhary/cn_cisl/database"
 )
 
@@ -12,27 +10,44 @@ type Teacher struct {
 	Department string `json:"dprt" db:"department"`
 }
 
-func CreateTeacher(teacher Teacher) error {
-	database.DB.Exec("CREATE TABLE IF NOT EXISTS Teacher (id INTEGER PRIMARY KEY, name TEXT, department TEXT)")
-
-	stmt, err := database.DB.Prepare("INSERT INTO Teacher(id,name, department) VALUES(?, ?, ?)")
-	if err != nil {
-		fmt.Println("Error while prepareing", err)
-	}
-	defer stmt.Close()
-	_, err = stmt.Exec(teacher.Id, teacher.Name, teacher.Department) // Execute statement with values
-	if err != nil {
-		// Handle error
-		fmt.Println("Error inserting", err)
-		return err
-
-	}
-	return nil
-}
-func GetTeacherByID(id int, teachers *[]Teacher) {
-
-	err := database.Read("Teacher", map[string]interface{}{"id": 123}, teachers)
+func (teacher Teacher) CreateTeacher() {
+	err := database.Insert("Teacher", teacher)
 	if err != nil {
 		panic(err)
 	}
+
+}
+
+func (teacher *Teacher) GetTeacherByID() {
+
+	var teachers []Teacher
+	err := database.Read("Teacher", map[string]interface{}{"id": teacher.Id}, &teachers)
+	if err != nil {
+		panic(err)
+	}
+
+	*teacher = teachers[0]
+
+}
+
+func (t *Teacher) GetTeacherByName(teachersOut ...interface{}) error {
+	conditions := map[string]interface{}{
+		"name": t.Name,
+	}
+
+	var teachers []Teacher
+	if len(teachersOut) > 0 && teachersOut[0] != nil {
+		err := database.Read("Teacher", conditions, teachersOut[0])
+		if err != nil {
+			return err
+		}
+	} else {
+		err := database.Read("Teacher", conditions, &teachers)
+		if err != nil {
+			return err
+		}
+		*t = teachers[0]
+	}
+
+	return nil
 }

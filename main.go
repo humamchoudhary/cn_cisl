@@ -3,21 +3,40 @@ package main
 import (
 	"fmt"
 
-	"github.com/humamchoudhary/cn_cisl/database"
 	"github.com/humamchoudhary/cn_cisl/models"
 )
 
 func main() {
-	database.ConnectDatabase()
 	// CREATING
-	// teacher := models.Teacher{Id: 123, Name: "test", Department: "computer"}
-	// models.CreateTeacher(teacher)
 
-	// SELECTING
-	var teacher []models.Teacher
-	models.GetTeacherByID(123, &teacher)
+	t := models.Teacher{
+		Id:         4,
+		Name:       "John Doe",
+		Department: "Computer Science",
+	}
+	t.CreateTeacher()
 
-	fmt.Println(teacher[0])
+	// SELECTING by id
+	teacher := models.Teacher{Id: 123}
+	teacher.GetTeacherByID()
+	fmt.Println(teacher)
+
+	// Seletecting by name
+
+	// Single
+	teacher = models.Teacher{Name: "John Doe"}
+	teacher.GetTeacherByName()
+	fmt.Println(teacher)
+
+	// Multiple
+	var teachers []models.Teacher
+	teacher = models.Teacher{Name: "John Doe"}
+	err := teacher.GetTeacherByName(&teachers)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(teachers)
+	
 
 	// router := gin.Default()
 	// t_r := router.Group("/teacher")

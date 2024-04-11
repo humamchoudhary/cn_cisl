@@ -14,9 +14,9 @@ var DB *sql.DB
 func ConnectDatabase() error {
 	db, err := sql.Open("sqlite3", "./cisl-database.db")
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
+
 	DB = db
 	return nil
 }
@@ -26,7 +26,6 @@ func Insert(tableName string, data interface{}) error {
 	if err != nil {
 		return err
 	}
-	defer DB.Close()
 
 	dataValue := reflect.ValueOf(data)
 	if dataValue.Kind() != reflect.Struct {
@@ -44,6 +43,9 @@ func Insert(tableName string, data interface{}) error {
 		values = append(values, dataValue.Field(i).Interface())
 		placeholders = append(placeholders, "?")
 	}
+	if err := CreateTable(tableName, data); err != nil {
+		panic(err)
+	}
 
 	query := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s)", tableName, strings.Join(columns, ", "), strings.Join(placeholders, ", "))
 	_, err = DB.Exec(query, values...)
@@ -58,10 +60,9 @@ func Read(tableName string, conditions map[string]interface{}, result interface{
 	if err != nil {
 		return err
 	}
-	defer DB.Close()
 
 	whereClause, whereValues := buildWhereClause(conditions)
-
+	CreateTable(tableName, result)
 	query := fmt.Sprintf("SELECT * FROM %s WHERE %s", tableName, whereClause)
 	rows, err := DB.Query(query, whereValues...)
 	if err != nil {
@@ -109,7 +110,6 @@ func Update(tableName string, data map[string]interface{}, conditions map[string
 	if err != nil {
 		return err
 	}
-	defer DB.Close()
 
 	setClause, setValues := buildSetClause(data)
 	whereClause, whereValues := buildWhereClause(conditions)
@@ -148,7 +148,6 @@ func Delete(tableName string, conditions map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
-	defer DB.Close()
 
 	whereClause, whereValues := buildWhereClause(conditions)
 
@@ -158,4 +157,77 @@ func Delete(tableName string, conditions map[string]interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func CreateTable(tableName string, data interface{}) error {
+	err := ConnectDatabase()
+	if err != nil {
+		return err
+	}
+
+	dataValue := reflect.ValueOf(data)
+	if dataValue.Kind() != reflect.Struct {
+		return fmt.Errorf("data must be a struct")
+	}
+
+	dataType := dataValue.Type()
+
+	// Check if the table exists
+	var count int
+	err = DB.QueryRow("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?", tableName).Scan(&count)
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		// Table doesn't exist, create it
+		columns := make([]string, 0, dataType.NumField())
+		primaryKeyFound := false
+		for i := 0; i < dataType.NumField(); i++ {
+			field := dataType.Field(i)
+			columnType := getColumnType(field.Type)
+			columnName := field.Name
+			if tag := field.Tag.Get("db"); tag != "" {
+				columnName = strings.Split(tag, ",")[0]
+			}
+			if tag := field.Tag.Get("primarykey"); tag != "" {
+				columns = append(columns, fmt.Sprintf("%s %s PRIMARY KEY", columnName, columnType))
+
+				primaryKeyFound = true
+			} else if tag := field.Tag.Get("foreignkey"); tag != "" {
+				columns = append(columns, fmt.Sprintf("%s %s", columnName, columnType))
+			} else {
+				columns = append(columns, fmt.Sprintf("%s %s", columnName, columnType))
+			}
+		}
+
+		if !primaryKeyFound {
+			return fmt.Errorf("a primary key must be defined for the table")
+		}
+
+		query := fmt.Sprintf("CREATE TABLE %s (%s)", tableName, strings.Join(columns, ", "))
+		_, err = DB.Exec(query)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func getColumnType(fieldType reflect.Type) string {
+	switch fieldType.Kind() {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return "INTEGER"
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		return "INTEGER"
+	case reflect.Float32, reflect.Float64:
+		return "REAL"
+	case reflect.String:
+		return "TEXT"
+	case reflect.Bool:
+		return "BOOLEAN"
+	default:
+		return "TEXT"
+	}
 }

@@ -10,14 +10,14 @@ func main() {
 	// CREATING
 
 	t := models.Teacher{
-		Id:         4,
+		Id:         5,
 		Name:       "John Doe",
 		Department: "Computer Science",
 	}
 	t.CreateTeacher()
 
 	// SELECTING by id
-	teacher := models.Teacher{Id: 123}
+	teacher := models.Teacher{Id: 4}
 	teacher.GetTeacherByID()
 	fmt.Println(teacher)
 
@@ -36,7 +36,6 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(teachers)
-	
 
 	// router := gin.Default()
 	// t_r := router.Group("/teacher")

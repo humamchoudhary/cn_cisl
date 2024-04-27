@@ -39,13 +39,20 @@ func Insert(tableName string, data interface{}) error {
 
 	for i := 0; i < dataType.NumField(); i++ {
 		field := dataType.Field(i)
-		columns = append(columns, field.Name)
+		dbTag := field.Tag.Get("db")
+		if dbTag != "" {
+			tagParts := strings.Split(dbTag, ",")
+			columns = append(columns, tagParts[0])
+		} else {
+			columns = append(columns, field.Name)
+		}
 		values = append(values, dataValue.Field(i).Interface())
 		placeholders = append(placeholders, "?")
 	}
 	if err := CreateTable(tableName, data); err != nil {
 		panic(err)
 	}
+	fmt.Print(columns)
 
 	query := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s)", tableName, strings.Join(columns, ", "), strings.Join(placeholders, ", "))
 	_, err = DB.Exec(query, values...)

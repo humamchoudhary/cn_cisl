@@ -10,8 +10,8 @@ import (
 
 func AdminLoginHandler(c *gin.Context) {
 	type Admin struct {
-		Username string `json:username`
-		Password string `json:password`
+		Username string `json:'username'`
+		Password string `json:'password'`
 	}
 
 	var admin Admin
@@ -19,7 +19,7 @@ func AdminLoginHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "success": false})
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, gin.H{"success": true})
 
 }

@@ -1,12 +1,25 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/humamchoudhary/cn_cisl/models"
 )
 
 func main() {
+	// CREATING RESERVATION
+
+	reservation := models.Reservation{
+		ID:              2, // Provide a unique ID for the reservation
+		ReservationName: "John Doe",
+		Date:            "11/11/2011",
+		StartTime:       "01:00 AM",
+		EndTime:         "01:50 AM",
+		Recursive:       true,
+	}
+	reservation.CreateReservation()
+
+	// reservation := models.Reservation{ID: 1}
+	// fmt.Println(reservation)
+
 	// CREATING
 
 	// t := models.Teacher{
@@ -37,14 +50,14 @@ func main() {
 	// }
 	// fmt.Println(teachers)
 
-	router := gin.Default()
-	t_r := router.Group("/teacher")
-	{
-		t_r.POST("/login", handler.HandlerTeacherLogin)
-	}
-	router.LoadHTMLGlob("templates/*")
+	// router := gin.Default()
+	// t_r := router.Group("/teacher")
+	// {
+	// 	t_r.POST("/login", handler.HandlerTeacherLogin)
+	// }
+	// router.LoadHTMLGlob("templates/*")
 
-	router.GET("/reserve", handler.GetreserveHandler)
-	router.GET("/login", handler.GetLoginHandler)
-	router.Run(":80")
+	// router.GET("/reserve", handler.GetreserveHandler)
+	// router.GET("/login", handler.GetLoginHandler)
+	// router.Run(":80")
 }

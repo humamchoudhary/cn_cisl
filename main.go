@@ -1,6 +1,7 @@
 package main
 
 import (
+<<<<<<< HEAD
 	"github.com/humamchoudhary/cn_cisl/models"
 )
 
@@ -19,6 +20,13 @@ func main() {
 
 	// reservation := models.Reservation{ID: 1}
 	// fmt.Println(reservation)
+=======
+	"github.com/gin-gonic/gin"
+	"github.com/humamchoudhary/cn_cisl/handler"
+)
+
+func main() {
+>>>>>>> 0901d8ffdb650d633053e3160264d612c3e17c41
 
 	// CREATING
 
@@ -31,25 +39,26 @@ func main() {
 
 	// // SELECTING by id
 	// teacher := models.Teacher{Id: 4}
-	// teacher.GetTeacherByID()
+	// teacher.Search()
 	// fmt.Println(teacher)
 
 	// // Seletecting by name
 
 	// // Single
 	// teacher = models.Teacher{Name: "John Doe"}
-	// teacher.GetTeacherByName()
+	// teacher.Search()
 	// fmt.Println(teacher)
 
 	// // Multiple
 	// var teachers []models.Teacher
 	// teacher = models.Teacher{Name: "John Doe"}
-	// err := teacher.GetTeacherByName(&teachers)
+	// err := teacher.Search(&teachers)
 	// if err != nil {
 	// 	panic(err)
 	// }
 	// fmt.Println(teachers)
 
+<<<<<<< HEAD
 	// router := gin.Default()
 	// t_r := router.Group("/teacher")
 	// {
@@ -60,4 +69,18 @@ func main() {
 	// router.GET("/reserve", handler.GetreserveHandler)
 	// router.GET("/login", handler.GetLoginHandler)
 	// router.Run(":80")
+=======
+	router := gin.Default()
+	t_r := router.Group("/teacher")
+	{
+		t_r.POST("/login", handler.TeacherLoginHandler)
+	}
+
+	c_r := router.Group("/class")
+	{
+		c_r.GET("/all")
+	}
+
+	router.Run(":80")
+>>>>>>> 0901d8ffdb650d633053e3160264d612c3e17c41
 }

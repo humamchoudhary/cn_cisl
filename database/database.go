@@ -26,7 +26,7 @@ func Insert(tableName string, data interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	fmt.Println(data)
 	dataValue := reflect.ValueOf(data)
 	if dataValue.Kind() != reflect.Struct {
 		return fmt.Errorf("data must be a struct")
@@ -191,8 +191,11 @@ func CreateTable(tableName string, data interface{}) error {
 				columnName = strings.Split(tag, ",")[0]
 			}
 			if tag := field.Tag.Get("primarykey"); tag != "" {
-				columns = append(columns, fmt.Sprintf("%s %s PRIMARY KEY", columnName, columnType))
-
+				if strings.Contains(tag, "autoincrement") {
+					columns = append(columns, fmt.Sprintf("%s %s PRIMARY KEY AUTOINCREMENT", columnName, columnType))
+				} else {
+					columns = append(columns, fmt.Sprintf("%s %s PRIMARY KEY", columnName, columnType))
+				}
 				primaryKeyFound = true
 			} else if tag := field.Tag.Get("foreignkey"); tag != "" {
 				columns = append(columns, fmt.Sprintf("%s %s", columnName, columnType))

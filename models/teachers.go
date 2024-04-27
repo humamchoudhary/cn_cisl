@@ -8,26 +8,27 @@ type Teacher struct {
 	Id         int    `json:"id" db:"id,primarykey" primarykey:"true" `
 	Name       string `json:"name" db:"name"`
 	Department string `json:"dprt" db:"department"`
+	Password   string `json:"-" db:"password"`
 }
 
-func (teacher Teacher) CreateTeacher() {
+func (teacher Teacher) CreateTeacher() error {
 	err := database.Insert("Teacher", teacher)
 	if err != nil {
-		panic(err)
+		return err
 	}
-
+	return nil
 }
 
-func (teacher *Teacher) GetTeacherByID() {
+func (teacher *Teacher) GetTeacherByID() error {
 
 	var teachers []Teacher
 	err := database.Read("Teacher", map[string]interface{}{"id": teacher.Id}, &teachers)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	*teacher = teachers[0]
-
+	return nil
 }
 
 func (t *Teacher) GetTeacherByName(teachersOut ...interface{}) error {

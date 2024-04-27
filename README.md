@@ -41,7 +41,7 @@ Presentation:
     Solicit feedback from stakeholders for further refinement and improvement.
 # Todo:
 ## Backend:
-- [ ] Login for teacher 
+- [x] Login for teacher
 - [ ] Login for admin 
 - [ ] Lab Reservation 
 - [ ] View Timing 

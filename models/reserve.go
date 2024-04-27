@@ -5,12 +5,12 @@ import (
 )
 
 type Reservation struct {
-	ID              int    `json:"id" db:"id,primarykey" primarykey:"true"`
-	ReservationName string `json:"reservationname" db:"reservationname"`
-	Date            string `json:"date" db:"date"`
-	StartTime       string `json:"startTime" db:"start_time"`
-	EndTime         string `json:"endTime" db:"end_time"`
-	Recursive       bool   `json:"recursive" db:"recursive"`
+	ID         int    `json:"id" db:"id,primarykey" primarykey:"true"`
+	ReserverId string `json:"reservationname" db:"reserverId"`
+	Date       string `json:"date" db:"date"`
+	StartTime  string `json:"startTime" db:"start_time"`
+	EndTime    string `json:"endTime" db:"end_time"`
+	Recursive  bool   `json:"recursive" db:"recursive"`
 }
 
 func (reservation Reservation) CreateReservation() {

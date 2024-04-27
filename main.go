@@ -41,9 +41,11 @@ func main() {
 	{
 		t_r.POST("/login", handler.TeacherLoginHandler)
 	}
-	router.LoadHTMLGlob("templates/*")
 
-	router.GET("/reserve", handler.GetreserveHandler)
-	router.GET("/login", handler.GetLoginHandler)
+	c_r := router.Group("/class")
+	{
+		c_r.GET("/all")
+	}
+
 	router.Run(":80")
 }

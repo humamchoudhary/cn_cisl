@@ -19,7 +19,7 @@ func (teacher Teacher) CreateTeacher() error {
 	return nil
 }
 
-func (teacher *Teacher) GetTeacherByID() error{
+func (teacher *Teacher) GetTeacherByID() error {
 
 	var teachers []Teacher
 	err := database.Read("Teacher", map[string]interface{}{"id": teacher.Id}, &teachers)
@@ -28,7 +28,7 @@ func (teacher *Teacher) GetTeacherByID() error{
 	}
 
 	*teacher = teachers[0]
-return nil
+	return nil
 }
 
 func (t *Teacher) GetTeacherByName(teachersOut ...interface{}) error {

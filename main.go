@@ -39,7 +39,7 @@ func main() {
 	router := gin.Default()
 	t_r := router.Group("/teacher")
 	{
-		t_r.POST("/login", handler.HandlerTeacherLogin)
+		t_r.POST("/login", handler.TeacherLoginHandler)
 	}
 	router.LoadHTMLGlob("templates/*")
 

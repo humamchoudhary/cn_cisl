@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/humamchoudhary/cn_cisl/models"
+	"github.com/gin-gonic/gin"
+	"github.com/humamchoudhary/cn_cisl/handler"
 )
 
 func main() {
@@ -18,20 +17,20 @@ func main() {
 
 	// // SELECTING by id
 	// teacher := models.Teacher{Id: 4}
-	// teacher.GetTeacherByID()
+	// teacher.Search()
 	// fmt.Println(teacher)
 
 	// // Seletecting by name
 
 	// // Single
 	// teacher = models.Teacher{Name: "John Doe"}
-	// teacher.GetTeacherByName()
+	// teacher.Search()
 	// fmt.Println(teacher)
 
 	// // Multiple
 	// var teachers []models.Teacher
 	// teacher = models.Teacher{Name: "John Doe"}
-	// err := teacher.GetTeacherByName(&teachers)
+	// err := teacher.Search(&teachers)
 	// if err != nil {
 	// 	panic(err)
 	// }

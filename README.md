@@ -47,9 +47,9 @@ Presentation:
 - [ ] View Timing 
 
 ### Lab Reservation System:
-- [ ] Select Timing 
-- [ ] Select Recurrence 
-- [ ] Select Subject 
+- [x] Select Timing 
+- [x] Select Recurrence 
+- [x] Select Subject 
 - [ ] Delete a Reservation 
 - [ ] Edit a Reservation 
 

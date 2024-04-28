@@ -50,7 +50,7 @@ Presentation:
 - [x] Select Timing 
 - [x] Select Recurrence 
 - [x] Select Subject 
-- [ ] Delete a Reservation 
+- [x] Delete a Reservation 
 - [ ] Edit a Reservation 
 
 ## Frontend

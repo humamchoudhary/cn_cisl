@@ -1,24 +1,76 @@
 package main
 
-import (
-	"github.com/humamchoudhary/cn_cisl/models"
-)
-
 func main() {
 	// CREATING RESERVATION
 
-	reservation := models.Reservation{
-		ID:         2, // Provide a unique ID for the reservation
-		ReserverId: "John Doe",
-		Date:       "11/11/2011",
-		StartTime:  "01:00 AM",
-		EndTime:    "01:50 AM",
-		Recursive:  true,
-	}
-	reservation.CreateReservation()
+	// reservation := models.Reservation{
+	// 	ID:         1231231, // Provide a unique ID for the reservation
+	// 	ReserverId: "John Doe",
+	// 	Date:       "11/11/2011",
+	// 	StartTime:  "01:00 AM",
+	// 	EndTime:    "01:50 AM",
+	// 	Recursive:  true,
+	// }
+	// reservation.CreateReservation()
 
-	// reservation := models.Reservation{ID: 1}
+	// SELECTING BY TIME
+
+	// reservations := models.GetReservationsByTime("01:00 AM", "01:50 AM")
+	// for _, reservation := range reservations {
+	// 	fmt.Println(reservation)
+	// }
+
+	// SELECTING BY RESERVER_ID
+
+	// reservations := models.GetReservationsByReserverID("John Doe")
+	// for _, reservation := range reservations {
+	// 	fmt.Println(reservation)
+	// }
+
+	// EDITING AN ENTRY
+
+	// reservationID := 1231231
+	// reservation, err := models.GetReservationByID(reservationID)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// // Print the original reservation
+	// fmt.Println("Original Reservation:")
 	// fmt.Println(reservation)
+
+	// // Modify some fields of the reservation
+	// reservation.ReserverId = "Alice"
+	// reservation.Date = "12/12/2012"
+
+	// // Call the EditReservation function to update the reservation
+	// newReservation := models.Reservation{
+	// 	ID:         reservation.ID,
+	// 	ReserverId: reservation.ReserverId,
+	// 	Date:       reservation.Date,
+	// 	StartTime:  reservation.StartTime,
+	// 	EndTime:    reservation.EndTime,
+	// 	Recursive:  reservation.Recursive,
+	// }
+	// fmt.Println("Editing Reservation...")
+	// reservation.EditReservation(newReservation)
+	// fmt.Println("Reservation Edited.")
+
+	// // Print the updated reservation
+	// fmt.Println("Updated Reservation:")
+	// updatedReservation, err := models.GetReservationByID(reservationID)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(updatedReservation)
+
+	// DELETING A RESERVATION
+	// reservationID := 1231231
+	// reservation, err := models.GetReservationByID(reservationID)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// reservation.DeleteReservation()
 
 	// CREATING
 
@@ -34,10 +86,10 @@ func main() {
 	// teacher.Search()
 	// fmt.Println(teacher)
 
-	// // Seletecting by name
+	// // Selecting by name
 
 	// // Single
-	// teacher = models.Teacher{Name: "John Doe"}
+	// teacher := models.Teacher{Name: "John Doe"}
 	// teacher.Search()
 	// fmt.Println(teacher)
 

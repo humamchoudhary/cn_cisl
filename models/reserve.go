@@ -7,7 +7,7 @@ import (
 )
 
 type Reservation struct {
-	ID         int    `json:"id" db:"id,primarykey" primarykey:"true"`
+	ID         string `json:"id" db:"id,primarykey" primarykey:"true"`
 	ReserverId string `json:"reservationname" db:"reserverId"`
 	Date       string `json:"date" db:"date"`
 	StartTime  string `json:"startTime" db:"start_time"`
@@ -81,6 +81,7 @@ func (r *Reservation) Delete() error {
 	}
 	return nil
 }
+
 func (r *Reservation) Edit(newReservation Reservation) error {
 	newReservationMap := make(map[string]interface{})
 
@@ -113,5 +114,9 @@ func (r *Reservation) Edit(newReservation Reservation) error {
 		return err
 	}
 
+	return nil
+}
+
+func GetAll() error {
 	return nil
 }

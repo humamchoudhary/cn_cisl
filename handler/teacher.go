@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/humamchoudhary/cn_cisl/models"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -16,7 +17,7 @@ func auth(teacher *models.Teacher, password string) error {
 
 func TeacherLoginHandler(c *gin.Context) {
 	type LoginRequest struct {
-		Id       int    `json:"id"`
+		Id       string `json:"id"`
 		Password string `json:"password"`
 	}
 	var loginRequest LoginRequest
@@ -68,8 +69,38 @@ func TeacherLoginHandler(c *gin.Context) {
 
 //		c.JSON(http.StatusCreated, gin.H{"message": "Teacher created successfully"})
 //	}
-func TeacherReserverTimehandler(c *gin.Context) {
-	fmt.Print("reserve")
+func ReserveLabhandler(c *gin.Context) {
+	// fmt.Print("reserve")
+
+	type ReservationInput struct {
+		ID         string `json:"id"`
+		ReserverId string `json:"reservationid" `
+		Date       string `json:"date" `
+		StartTime  string `json:"startTime"`
+		EndTime    string `json:"endTime" `
+		Recursive  bool   `json:"recursive"`
+	}
+	var reservationinput ReservationInput
+	if err := c.ShouldBindJSON(&reservationinput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	r := models.Reservation(reservationinput)
+	id, err := uuid.NewUUID()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+
+	}
+	r.ID = id.String()
+	fmt.Println(r)
+	if err = r.CreateReservation(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"id": r.ID})
+
 }
 
 // t := models.Teacher{

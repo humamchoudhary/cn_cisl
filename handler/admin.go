@@ -28,7 +28,7 @@ func AdminCreateTeacherHandler(c *gin.Context) {
 
 	type SignUpRequest struct {
 		Name       string `json:"name"`
-		Id         int    `json:"id"`
+		Id         string `json:"id"`
 		Password   string `json:"password"`
 		Department string `json:"department"`
 	}

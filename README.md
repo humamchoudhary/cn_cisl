@@ -42,9 +42,9 @@ Presentation:
 # Todo:
 ## Backend:
 - [x] Login for teacher
-- [ ] Login for admin 
-- [ ] Lab Reservation 
-- [ ] View Timing 
+- [x] Login for admin 
+- [x] Lab Reservation 
+- [x] View Timing 
 
 ### Lab Reservation System:
 - [x] Select Timing 

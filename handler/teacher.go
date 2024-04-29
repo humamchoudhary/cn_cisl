@@ -55,6 +55,7 @@ func ReserveLabhandler(c *gin.Context) {
 	}
 	var reservationinput ReservationInput
 	if err := c.ShouldBindJSON(&reservationinput); err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
@@ -80,7 +81,7 @@ func TeacherLogoutHandler(c *gin.Context) {
 	SetSessionKey(c, "teacher", nil)
 }
 
-func EditReservation(c *gin.Context) {
+func EditReservationHandler(c *gin.Context) {
 	teacherID := GetSessionByKey(c, "teacher")
 	if teacherID == nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
@@ -114,6 +115,34 @@ func EditReservation(c *gin.Context) {
 	}
 
 	r_search.Edit(r_in)
+	c.JSON(http.StatusOK, gin.H{})
+
+}
+
+func DeleteReservationHandler(c *gin.Context) {
+	teacherID := GetSessionByKey(c, "teacher")
+	if teacherID == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+	var reservationinput models.Reservation
+	if err := c.ShouldBindJSON(&reservationinput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+	if err := reservationinput.GetByID(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if reservationinput.ReserverId != teacherID {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	if err := reservationinput.Delete(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{})
 
 }

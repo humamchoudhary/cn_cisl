@@ -31,7 +31,8 @@ func main() {
 		t_r.POST("/login", handler.TeacherLoginHandler)
 		t_r.POST("/logout", handler.TeacherLogoutHandler)
 		t_r.POST("/create-reservation", handler.ReserveLabhandler)
-		t_r.POST("/edit-reservation", handler.EditReservation)
+		t_r.POST("/edit-reservation", handler.EditReservationHandler)
+		t_r.POST("/delete-reservation", handler.DeleteReservationHandler)
 	}
 
 	a_r := router.Group("/admin")
@@ -39,6 +40,7 @@ func main() {
 		a_r.POST("/login", handler.AdminLoginHandler)
 		a_r.POST("/create-teacher", handler.AdminCreateTeacherHandler)
 		a_r.POST("/logout", handler.AdminLogOutHandler)
+		a_r.POST("/delete-reservation", handler.AdminDeleteReservation)
 
 	}
 

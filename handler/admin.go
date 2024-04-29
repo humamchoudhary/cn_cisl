@@ -81,3 +81,22 @@ func AdminLogOutHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 
 }
+
+func AdminDeleteReservation(c *gin.Context) {
+	if admin := GetSessionByKey(c, "admin"); admin == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+	var reservationinput models.Reservation
+	if err := c.ShouldBindJSON(&reservationinput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	if err := reservationinput.Delete(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{})
+
+}

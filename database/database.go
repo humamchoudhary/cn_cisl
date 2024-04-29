@@ -62,6 +62,56 @@ func Insert(tableName string, data interface{}) error {
 	return nil
 }
 
+func ReadAll(tableName string, result interface{}) error {
+	err := ConnectDatabase()
+	if err != nil {
+		return err
+	}
+
+	CreateTable(tableName, result)
+
+	query := fmt.Sprintf("SELECT * FROM %s", tableName)
+	rows, err := DB.Query(query)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	cols, err := rows.Columns()
+	if err != nil {
+		return err
+	}
+
+	resultValue := reflect.ValueOf(result)
+	if resultValue.Kind() != reflect.Ptr || resultValue.Elem().Kind() != reflect.Slice {
+		return fmt.Errorf("result argument must be a pointer to a slice")
+	}
+
+	sliceValue := resultValue.Elem()
+	elementType := sliceValue.Type().Elem()
+
+	for rows.Next() {
+		newElement := reflect.New(elementType).Interface()
+		rowPtr := make([]interface{}, len(cols))
+		for i := range rowPtr {
+			rowPtr[i] = reflect.ValueOf(newElement).Elem().Field(i).Addr().Interface()
+		}
+
+		err := rows.Scan(rowPtr...)
+		if err != nil {
+			return err
+		}
+
+		sliceValue.Set(reflect.Append(sliceValue, reflect.ValueOf(newElement).Elem()))
+	}
+
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func Read(tableName string, conditions map[string]interface{}, result interface{}) error {
 	err := ConnectDatabase()
 	if err != nil {

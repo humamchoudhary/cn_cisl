@@ -9,6 +9,7 @@ import (
 )
 
 func AdminLoginHandler(c *gin.Context) {
+
 	type Admin struct {
 		Username string `json:'username'`
 		Password string `json:'password'`
@@ -16,15 +17,27 @@ func AdminLoginHandler(c *gin.Context) {
 
 	var admin Admin
 	if err := c.ShouldBindJSON(&admin); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "success": false})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
+	if admin.Username == "humamAdmin" && admin.Password == "Admin123" {
 
-	c.JSON(http.StatusOK, gin.H{"success": true})
+		SetSessionKey(c, "admin", admin.Username)
+		c.JSON(http.StatusOK, gin.H{"success": true})
+	} else {
+		SetSessionKey(c, "admin", nil)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid username/password"})
+		return
+
+	}
 
 }
 
 func AdminCreateTeacherHandler(c *gin.Context) {
+	if admin := GetSessionByKey(c, "admin"); admin != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Unauthorized"})
+		return
+	}
 
 	type SignUpRequest struct {
 		Name       string `json:"name"`
@@ -55,6 +68,16 @@ func AdminCreateTeacherHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "Teacher created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Teacher created successfully"})
+
+}
+
+func AdminLogOutHandler(c *gin.Context) {
+	if admin := GetSessionByKey(c, "admin"); admin != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Unauthorized"})
+		return
+	}
+	SetSessionKey(c, "admin", nil)
+	c.JSON(http.StatusOK, gin.H{})
 
 }

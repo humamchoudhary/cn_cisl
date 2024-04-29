@@ -117,6 +117,11 @@ func (r *Reservation) Edit(newReservation Reservation) error {
 	return nil
 }
 
-func GetAll() error {
-	return nil
+func GetAllReservations() ([]Reservation, error) {
+	var reservations []Reservation
+	err := database.ReadAll("Reservation", &reservations)
+	if err != nil {
+		return nil, err
+	}
+	return reservations, nil
 }

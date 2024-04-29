@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
@@ -27,19 +29,31 @@ func main() {
 	t_r := router.Group("/teacher")
 	{
 		t_r.POST("/login", handler.TeacherLoginHandler)
+		t_r.POST("/logout", handler.TeacherLogoutHandler)
 		t_r.POST("/create-reservation", handler.ReserveLabhandler)
+		t_r.POST("/edit-reservation", handler.EditReservation)
 	}
 
 	a_r := router.Group("/admin")
 	{
 		a_r.POST("/login", handler.AdminLoginHandler)
 		a_r.POST("/create-teacher", handler.AdminCreateTeacherHandler)
+		a_r.POST("/logout", handler.AdminLogOutHandler)
+
 	}
 
 	r_r := router.Group("/reservation")
 	{
 		r_r.GET("/getAll", handler.HandlerGetAll)
+
 	}
 
+	temp_r := router.Group("/temp")
+	{
+		temp_r.GET("/session", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{"message": handler.GetSessionByKey(c, "admin")})
+
+		})
+	}
 	router.Run(":8000")
 }

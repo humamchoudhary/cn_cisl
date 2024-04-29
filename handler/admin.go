@@ -34,8 +34,8 @@ func AdminLoginHandler(c *gin.Context) {
 }
 
 func AdminCreateTeacherHandler(c *gin.Context) {
-	if admin := GetSessionByKey(c, "admin"); admin != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Unauthorized"})
+	if admin := GetSessionByKey(c, "admin"); admin == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
 
@@ -73,8 +73,8 @@ func AdminCreateTeacherHandler(c *gin.Context) {
 }
 
 func AdminLogOutHandler(c *gin.Context) {
-	if admin := GetSessionByKey(c, "admin"); admin != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Unauthorized"})
+	if admin := GetSessionByKey(c, "admin"); admin == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
 	SetSessionKey(c, "admin", nil)

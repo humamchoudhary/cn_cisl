@@ -23,6 +23,7 @@ func AdminLoginHandler(c *gin.Context) {
 	if admin.Username == "humamAdmin" && admin.Password == "Admin123" {
 
 		SetSessionKey(c, "admin", admin.Username)
+
 		c.JSON(http.StatusOK, gin.H{"success": true})
 	} else {
 		SetSessionKey(c, "admin", nil)
@@ -99,4 +100,14 @@ func AdminDeleteReservation(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{})
 
+}
+
+func AdminAuthHandler(c *gin.Context) {
+	
+	if admin := GetSessionByKey(c, "admin"); admin != nil {
+		c.JSON(http.StatusOK, gin.H{"auth": true})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"auth": false})
 }

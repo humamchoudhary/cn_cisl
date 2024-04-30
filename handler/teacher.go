@@ -146,3 +146,13 @@ func DeleteReservationHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 
 }
+
+func TeacherAuthHandler(c *gin.Context) {
+
+	if admin := GetSessionByKey(c, "teacher"); admin != nil {
+		c.JSON(http.StatusOK, gin.H{"auth": true})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"auth": false})
+}
